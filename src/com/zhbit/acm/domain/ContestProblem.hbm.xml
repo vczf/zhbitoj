@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.zhbit.acm.domain.ContestProblem" dynamic-insert="true" dynamic-update="true" table="contest_problem">
+        <composite-id>
+            <key-property name="contestid" column="contest_id" type="java.lang.Integer"/>
+            <key-property name="problemid" column="problem_id" type="java.lang.Integer"/>
+        </composite-id>
+        <property name="title" column="title"/>
+        <property name="time" column="in_date" />
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping >
+    <!--private int problemId;-->
+    <!--private String title;-->
+    <!--private String description;-->
+    <!--private String input;-->
+    <!--private String output;-->
+    <!--private String sampleInput;-->
+    <!--private String sampleOutput;-->
+    <!--private String hint;-->
+    <!--private int timeLimit;-->
+    <!--private int memoryLimit;-->
+    <!--private int submit;-->
+    <!--private int solved;-->
+    <!--private int ac;-->
+    <!--private int pe;-->
+    <!--private int wa;-->
+    <!--private int re;-->
+    <!--private int tle;-->
+    <!--private int mle;-->
+    <!--private int ole;-->
+    <!--private int ce;-->
+    <!--private boolean isDelete;-->
+
+    <class name="com.zhbit.acm.domain.Problem" table="problem_info">
+        <id name="problemId" column="problem_id">
+            <!--从数据库中获得自增值 ,可能嘛????-->
+            <generator class="identity" />
+        </id>
+
+        <property name="title" column="title" length="100" />
+
+        <property name="description" column="description" type="text" />
+
+        <property name="input" column="input" type="text" />
+
+        <property name="output" column="output" type="text" />
+
+        <property name="sampleInput" column="sample_input" type="text" />
+
+        <property name="sampleOutput" column="sample_output" type="text" />
+
+        <property name="hint" column="hint" type="text"/>
+
+        <property name="source" column="source" length="40" />
+
+        <property name="timeLimit" column="time_limit" />
+
+        <property name="memoryLimit" column="memory_limit" />
+
+        <property name="submit" column="submit" />
+
+        <property name="solved" column="solved" />
+
+        <property name="ac" column="AC" />
+
+        <property name="pe" column="PE" />
+
+        <property name="wa" column="WA" />
+
+        <property name="re" column="RE" />
+
+        <property name="tle" column="TLE" />
+
+        <property name="mle" column="MLE" />
+
+        <property name="ole" column="OLE" />
+
+        <property name="ce" column="CE" />
+
+        <property name="hide" column="hide" type="boolean"/>
+
+        <property name="delete" column="is_delete" type="boolean" />
+    </class>
+
+</hibernate-mapping>

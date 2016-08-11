@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.zhbit.acm.domain.User" table="user_info">
+        <!--主键 userName-->
+
+        <id name="userName" type="java.lang.String" column="user_name" length="40">
+            <generator class="assigned"/>
+        </id>
+        <property name="password" column="password" length="40" />
+
+        <property name="email" column="email" length="40" />
+
+        <property name="nick" column="nick" length="40" />
+
+        <property name="studentId" column="student_id" length="20" />
+
+        <property name="note" column="note" type="text" />
+
+        <property name="regTime" column="register" type="java.util.Date" />
+
+        <property name="role" />
+
+    </class>
+
+</hibernate-mapping>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.zhbit.acm.domain.Contest" dynamic-insert="true" dynamic-update="true" table="contest_info">
+        <id name="contest_id" type="java.lang.Integer" column="contest_id">
+            <generator class="native"/>
+        </id>
+        <property name="title" column="title" length="100" />
+        <property name="description" column="description" type="text"/>
+        <property name="start_time" type="java.util.Date" column="start_time"/>
+        <property name="end_time" type="java.util.Date" column="end_time"/>
+        <property name="mode" column="mode"/>
+
+        <set name="players" table="contest_player" inverse="false" cascade="all"  lazy="true" fetch="join"> <!-- lazy = false 因为不会用 -->
+            <key>
+                <column name="contest_id" />
+            </key>
+            <one-to-many class="com.zhbit.acm.domain.ContestPlayer" />
+        </set>
+    </class>
+</hibernate-mapping>

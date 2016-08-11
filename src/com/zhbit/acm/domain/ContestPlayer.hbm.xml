@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.zhbit.acm.domain.ContestPlayer" table="contest_player">
+        <composite-id>
+            <key-property name="contestId" column="contest_id" type="java.lang.Integer"/>
+            <key-property name="userName" column="user_name" />
+        </composite-id>
+
+        <set name="rankings" lazy="true" cascade="all" table="contest_rank_info" inverse="false" fetch="join">
+            <key>
+                <column name="contest_id" />
+                <column name="user_name" />
+            </key>
+            <one-to-many class="com.zhbit.acm.domain.ContestRanking"/>
+        </set>
+
+    </class>
+
+</hibernate-mapping>

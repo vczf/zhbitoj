@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+        "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+    <constant name="struts.i18n.encoding" value="UTF-8" />
+    <constant name="struts.serve.static.browserCache" value="false"/>
+    <constant name="struts.configuration.xml.reload" value="true"/>
+    <!--<constant name="struts.devMode" value="true" />-->
+    <constant name="struts.ui.theme" value="simple" />
+    <constant name="struts.objectFactory" value="spring" />
+
+
+
+
+    <!--</package>-->
+
+    <package name="global" namespace="/" extends="json-default">
+        <interceptors>
+            <interceptor name="loginInterception" class="com.zhbit.acm.interceptors.LoginInterceptor"/>
+        </interceptors>
+
+
+        <global-results>
+            <result name="index_page" type="chain">
+                <param name="namespace">/</param>
+                <param name="actionName">index</param>
+            </result>
+            <result name="login_page">/pages/login.jsp</result>
+            <result name="list_page">/pages/list.jsp</result>
+            <result name="problem_info">/pages/probleminfo.jsp</result>
+            <result name="status_page">/pages/status.jsp</result>
+            <result name="register_page">/pages/register.jsp</result>
+            <result name="submit_page">/pages/submit.jsp</result>
+            <result name="source_page">/pages/solution.jsp</result>
+            <result name="contest_page">/pages/contest/contest_list.jsp</result>
+        </global-results>
+
+    </package>
+
+
+    <!-- Add packages here -->
+
+    <package name="index" namespace="/" extends="global">
+
+        <action name="index">
+            <result name="success">/index.jsp</result>
+        </action>
+
+        <action name="faqs">
+            <result name="success">/pages/faq.jsp</result>
+        </action>
+
+        <!--问题列表-->
+        <action name="problems" class="problemAction">
+            <result name="input">/pages/message/problem_not_found.jsp</result>
+        </action>
+
+        <!--查看题目明细-->
+        <action name="problems_detail" class="problemAction" method="detail">
+            <result name="problem_not_found">/pages/message/problem_not_found.jsp</result>
+            <result name="input">/pages/message/problem_not_found.jsp</result>
+        </action>
+
+        <!--搜索题目-->
+        <action name="problems_search" class="com.zhbit.acm.web.action.ProblemAction" method="search">
+            <result name="input" type="redirectAction">/problems</result>
+        </action>
+
+        <!--查看提交记录-->
+        <action name="status" class="statusAction">
+        </action>
+
+
+        <!--搜索解决方案-->
+        <action name="status_search" class="statusAction" method="search">
+            <result name="input" type="redirectAction">/status</result>
+            <result name="success">/pages/status.jsp</result>
+        </action>
+
+
+        <!--显示注册页面-->
+        <action name="register" class="registerAction">
+            <result name="input">/page/register.jsp</result>
+        </action>
+
+        <!--注册新用户-->
+        <action name="register_*" class="registerAction" method="{1}">
+            <interceptor-ref name="defaultStack" />
+
+            <result name="success">/pages/message/reg_success.jsp</result>
+            <result name="input">
+                /pages/register.jsp
+            </result>
+            <result name="error" type="json" />
+        </action>
+
+
+        <!--显示登录页面-->
+        <action name="login" class="loginAction">
+        </action>
+
+
+
+        <!--处理登录请求-->
+        <action name="login_post" class="loginAction" method="post">
+            <result name="success" type="redirectAction">
+                <param name="namespace">/</param>
+                <param name="actionName">index</param>
+            </result>
+            <result name="referer" type="redirectAction">
+                    ${#session['referer']}
+            </result>
+        </action>
+
+
+        <!--注销用户-->
+        <action name="logout" class="userAction" method="logout">
+            <interceptor-ref name="loginInterception" />
+            <interceptor-ref name="defaultStack" />
+        </action>
+        
+        <action name="submit" class="submitAction">
+            <result name="input">/pages/submit.jsp</result>
+        </action>
+
+        <!--提交代码-->
+        <action name="submit_post" class="submitAction" method="post">
+            <interceptor-ref name="loginInterception" />
+            <interceptor-ref name="defaultStack" />
+            <result name="success" type="redirectAction">
+                <param name="namespace">/</param>
+                <param name="actionName">status</param>
+            </result>
+            <result name="input">/pages/submit.jsp</result>
+
+        </action>
+        
+        <action name="source" class="sourceAction">
+            <interceptor-ref name="loginInterception" />
+            <interceptor-ref name="defaultStack" />
+            <result name="input" type="redirect">/pages/message/source_not_found.jsp</result>
+        </action>
+
+        <action name="ce" class="ceAction">
+            <result name="input">/pages/message/compile_not_found.jsp</result>
+        </action>
+    </package>
+
+    <package name="user" extends="global" namespace="/user">
+
+        <action name="info" class="userAction" method="info">
+            <result name="success">/pages/user_info.jsp</result>
+            <result name="input">
+                /pages/message/user_not_found.jsp
+            </result>
+        </action>
+
+
+
+        <action name="edit_show" class="userAction" method="showEdit">
+            <interceptor-ref name="loginInterception" />
+            <interceptor-ref name="defaultStack" />
+            <result name="success">
+                /pages/user_form.jsp
+            </result>
+        </action>
+
+        <action name="user_edit" class="userAction" method="edit">
+            <interceptor-ref name="loginInterception" />
+            <interceptor-ref name="defaultStack" />
+            <result name="success" type="chain">
+                <param name="namespace">/</param>
+                <param name="actionName">index</param>
+            </result>
+            <result name="input" type="chain">
+                <param name="namespace">/user</param>
+                <param name="actionName">edit_show</param>
+            </result>
+        </action>
+    </package>
+
+
+
+
+    <!--比赛相关用例-->
+    <package name="contest" namespace="/contest" extends="global">
+        
+        <interceptors>
+            <interceptor name="registerInterceptor" class="com.zhbit.acm.interceptors.ContestStatusInterceptor_Prepare"/>
+            <interceptor name="runningInterceptor" class="com.zhbit.acm.interceptors.ContestStatusInterceptor_Running" />
+            <interceptor name="authorityInterceptor" class="com.zhbit.acm.interceptors.UserAuthority" />
+            <interceptor-stack name="contest_runing">
+                <interceptor-ref name="loginInterception" />
+                <interceptor-ref name="defaultStack" />
+                <interceptor-ref name="runningInterceptor" />
+                <interceptor-ref name="authorityInterceptor"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <global-results>
+            <result name="contest_index" type="chain">
+                <param name="namespace">/contest</param>
+                <param name="actionName">show</param>
+            </result>
+            <result name="contest_list" type="redirectAction">
+                <param name="namespace">/contest</param>
+                <param name="actionName">list</param>
+            </result>
+        </global-results>
+
+        <!--显示比赛列表-->
+        <action name="list" class="contestAction" method="list">
+            <result name="input" type="redirectAction">
+                <param name="namespace">/contest</param>
+                <param name="actionName">list</param>
+            </result>
+        </action>
+
+        <!--比赛信息查看-->
+        <action name="show" class="contestAction" method="show">
+
+            <result name="input" type="redirectAction">
+                <param name="namespace">/contest</param>
+                <param name="actionName">list</param>
+            </result>
+            <result name="contest_not_found">/pages/message/contest_not_found.jsp</result>
+            <result name="success">/pages/contest/user_contest_desc.jsp</result>
+        </action>
+
+        <!--注册-->
+        <action name="register" class="contestPlayerAction" method="registerContest">
+            <interceptor-ref name="loginInterception"/>
+            <interceptor-ref name="defaultStack" />
+            <interceptor-ref name="registerInterceptor" />
+            <result name="input" type="redirect">/pages/message/register_error.jsp</result>
+            <result name="success" type="chain">
+                <param name="namespace">/contest</param>
+                <param name="actionName">show</param>
+            </result>
+        </action>
+
+        <!--查看问题列表-->
+        <action name="problem_list" class="contestProblemAction" method="listContestProblem">
+            <interceptor-ref name="contest_runing"/>
+            <result name="input" type="redirectAction">
+                <param name="namespace">/contest</param>
+                <param name="actionName">list</param>
+            </result>
+            <result name="success">/pages/contest/user_contest_problem.jsp</result>
+        </action>
+
+        <action name="problem_show" class="contestProblemAction" method="showContestProblem">
+            <interceptor-ref name="contest_runing"/>
+            <result name="input" type="redirectAction">
+                <param name="namespace">/contest</param>
+                <param name="actionName">list</param>
+            </result>
+            <result name="success">/pages/contest/user_contest_problem_info.jsp</result>
+        </action>
+
+
+        <!--页面提交跳转-->
+        <action name="submit">
+            <interceptor-ref name="contest_runing"/>
+            <result name="success">/pages/submit.jsp</result>
+        </action>
+
+        <!--提交比赛解决方案-->
+        <action name="submit_post" class="submitAction" method="submitInContest">
+            <interceptor-ref name="contest_runing"/>
+            <result name="input">/pages/message/submit_faild.jsp</result>
+            <result name="success" type="redirectAction">
+                <param name="namespace">/contest</param>
+                <param name="actionName">status?contestId=${contestId}</param>
+            </result>
+        </action>
+        
+        <!--查看解决方案-->
+        <action name="status" class="statusAction" method="statusInContest">
+            <interceptor-ref name="contest_runing" />
+            <result name="success">/pages/contest/user_contest_status.jsp</result>
+        </action>
+
+        <!--查看榜单-->
+        <action name="ranking" class="rankAction">
+            <interceptor-ref name="contest_runing" />
+            <result name="success">/pages/contest/user_contest_rank.jsp</result>
+        </action>
+    </package>
+
+
+</struts>

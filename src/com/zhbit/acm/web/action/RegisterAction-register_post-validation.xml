@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE validators PUBLIC
+        "-//Apache Struts//XWork Validator 1.0.3//EN"
+        "http://struts.apache.org/dtds/xwork-validator-1.0.3.dtd">
+<validators>
+    <field name="user">
+        <field-validator type="visitor">
+            <param name="context">post</param>
+            <param name="appendPrefix">true</param>
+            <message></message>
+        </field-validator>
+    </field>
+    <field name="user.email">
+        <field-validator type="email">
+            <message>邮箱输入有误</message>
+        </field-validator>
+    </field>
+    <field name="confirm">
+        <field-validator type="fieldexpression">
+            <param name="expression">
+                <![CDATA[confirm==user.password]]>
+            </param>
+            <message>两次输入密码不同</message>
+        </field-validator>
+    </field>
+</validators>
+

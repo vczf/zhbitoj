@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.zhbit.acm.domain.SourceCode" table="source_code">
+        <!--private int solutionId;-->
+        <!--private String source;-->
+        <!--private boolean isDelete;-->
+        <id name="solutionId" column="solution_id" type="int">
+            <generator class="assigned" />
+        </id>
+
+        <property name="source" column="source" type="text" />
+
+        <property name="isDelete" column="is_delete" />
+
+    </class>
+</hibernate-mapping>
